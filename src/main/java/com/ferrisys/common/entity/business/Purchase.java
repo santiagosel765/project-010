@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import java.util.UUID;
+import java.util.List;
+import java.time.LocalDate;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -31,8 +33,14 @@ public class Purchase extends Auditable implements Serializable {
     @Column
     private String description;
 
+    @Column(name = "purchase_date")
+    private java.time.LocalDate date;
+
     @Column
     private BigDecimal total;
+
+    @OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PurchaseDetail> details;
 
     @Column(nullable = false)
     private Integer status;

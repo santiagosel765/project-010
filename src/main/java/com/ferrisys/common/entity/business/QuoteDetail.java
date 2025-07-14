@@ -1,11 +1,14 @@
 package com.ferrisys.common.entity.business;
 
 import com.ferrisys.common.audit.Auditable;
+import com.ferrisys.common.entity.inventory.Product;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
-import java.util.UUID;
+
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -13,8 +16,8 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "bus_provider")
-public class Provider extends Auditable implements Serializable {
+@Table(name = "bus_quote_detail")
+public class QuoteDetail extends Auditable implements Serializable {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -22,21 +25,17 @@ public class Provider extends Auditable implements Serializable {
     @Column(columnDefinition = "uuid", updatable = false)
     private UUID id;
 
-    @Column(nullable = false)
-    private String name;
+    @ManyToOne
+    @JoinColumn(name = "quote_id", nullable = false)
+    private Quote quote;
 
-    @Column
-    private String contact;
-
-    @Column
-    private String phone;
-
-    @Column
-    private String address;
-
-    @Column
-    private String ruc;
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
 
     @Column(nullable = false)
-    private Integer status;
+    private Integer quantity;
+
+    @Column(name = "unit_price", nullable = false)
+    private BigDecimal unitPrice;
 }

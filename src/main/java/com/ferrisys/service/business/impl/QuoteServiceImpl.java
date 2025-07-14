@@ -1,10 +1,15 @@
 package com.ferrisys.service.business.impl;
 
 import com.ferrisys.common.dto.QuoteDTO;
+import com.ferrisys.common.dto.QuoteDetailDTO;
 import com.ferrisys.common.entity.business.Client;
 import com.ferrisys.common.entity.business.Quote;
+import com.ferrisys.common.entity.business.QuoteDetail;
+import com.ferrisys.common.entity.inventory.Product;
 import com.ferrisys.repository.ClientRepository;
 import com.ferrisys.repository.QuoteRepository;
+import com.ferrisys.repository.QuoteDetailRepository;
+import com.ferrisys.repository.ProductRepository;
 import com.ferrisys.service.business.QuoteService;
 import java.util.UUID;
 import jakarta.transaction.Transactional;
@@ -19,6 +24,8 @@ public class QuoteServiceImpl implements QuoteService {
 
     private final QuoteRepository quoteRepository;
     private final ClientRepository clientRepository;
+    private final QuoteDetailRepository detailRepository;
+    private final ProductRepository productRepository;
 
     @Override
     @Transactional
@@ -30,9 +37,25 @@ public class QuoteServiceImpl implements QuoteService {
                 .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
         quote.setClient(client);
         quote.setDescription(dto.getDescription());
+        quote.setDate(dto.getDate());
         quote.setTotal(dto.getTotal());
         quote.setStatus(dto.getStatus() != null ? dto.getStatus() : 1);
         quoteRepository.save(quote);
+
+        detailRepository.deleteByQuote(quote);
+        if (dto.getDetails() != null) {
+            for (QuoteDetailDTO d : dto.getDetails()) {
+                Product product = productRepository.findById(d.getProductId())
+                        .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+                QuoteDetail detail = QuoteDetail.builder()
+                        .quote(quote)
+                        .product(product)
+                        .quantity(d.getQuantity())
+                        .unitPrice(d.getUnitPrice())
+                        .build();
+                detailRepository.save(detail);
+            }
+        }
     }
 
     @Override
@@ -51,6 +74,14 @@ public class QuoteServiceImpl implements QuoteService {
                         .id(q.getId())
                         .clientId(q.getClient().getId())
                         .description(q.getDescription())
+                        .date(q.getDate())
+                        .details(q.getDetails() == null ? null : q.getDetails().stream()
+                                .map(d -> QuoteDetailDTO.builder()
+                                        .productId(d.getProduct().getId())
+                                        .quantity(d.getQuantity())
+                                        .unitPrice(d.getUnitPrice())
+                                        .build())
+                                .toList())
                         .total(q.getTotal())
                         .status(q.getStatus())
                         .build())

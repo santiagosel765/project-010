@@ -25,6 +25,9 @@ public class ProviderServiceImpl implements ProviderService {
                 : new Provider();
         provider.setName(dto.getName());
         provider.setContact(dto.getContact());
+        provider.setPhone(dto.getPhone());
+        provider.setAddress(dto.getAddress());
+        provider.setRuc(dto.getRuc());
         provider.setStatus(dto.getStatus() != null ? dto.getStatus() : 1);
         providerRepository.save(provider);
     }
@@ -41,7 +44,15 @@ public class ProviderServiceImpl implements ProviderService {
     @Override
     public List<ProviderDTO> list() {
         return providerRepository.findAll().stream()
-                .map(p -> new ProviderDTO(p.getId(), p.getName(), p.getContact(), p.getStatus()))
+                .map(p -> ProviderDTO.builder()
+                        .id(p.getId())
+                        .name(p.getName())
+                        .contact(p.getContact())
+                        .phone(p.getPhone())
+                        .address(p.getAddress())
+                        .ruc(p.getRuc())
+                        .status(p.getStatus())
+                        .build())
                 .toList();
     }
 }

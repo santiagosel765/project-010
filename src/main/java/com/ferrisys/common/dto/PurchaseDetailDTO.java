@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Getter
@@ -12,12 +14,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProviderDTO {
-    private UUID id;
-    private String name;
-    private String contact;
-    private String phone;
-    private String address;
-    private String ruc;
-    private Integer status;
+public class PurchaseDetailDTO {
+    private UUID productId;
+    private Integer quantity;
+    private BigDecimal unitPrice;
 }

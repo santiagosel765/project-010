@@ -30,6 +30,12 @@ public class Client extends Auditable implements Serializable {
     @Column
     private String email;
 
+    @Column
+    private String phone;
+
+    @Column
+    private String address;
+
     @Column(nullable = false)
     private Integer status;
 }
