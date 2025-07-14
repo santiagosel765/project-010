@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import java.util.UUID;
-
 import java.io.Serializable;
 
 @Getter

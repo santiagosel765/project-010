@@ -23,7 +23,6 @@ public class Quote extends Auditable implements Serializable {
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(columnDefinition = "uuid", updatable = false)
     private UUID id;
-
     @ManyToOne
     @JoinColumn(name = "client_id", nullable = false)
     private Client client;
