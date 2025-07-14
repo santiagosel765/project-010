@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.util.UUID;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -17,6 +19,8 @@ public class PurchaseDTO {
     private UUID id;
     private UUID providerId;
     private String description;
+    private LocalDate date;
+    private List<PurchaseDetailDTO> details;
     private BigDecimal total;
     private Integer status;
 }

@@ -25,6 +25,8 @@ public class ClientServiceImpl implements ClientService {
                 : new Client();
         client.setName(dto.getName());
         client.setEmail(dto.getEmail());
+        client.setPhone(dto.getPhone());
+        client.setAddress(dto.getAddress());
         client.setStatus(dto.getStatus() != null ? dto.getStatus() : 1);
         clientRepository.save(client);
     }
@@ -41,7 +43,14 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public List<ClientDTO> list() {
         return clientRepository.findAll().stream()
-                .map(c -> new ClientDTO(c.getId(), c.getName(), c.getEmail(), c.getStatus()))
+                .map(c -> ClientDTO.builder()
+                        .id(c.getId())
+                        .name(c.getName())
+                        .email(c.getEmail())
+                        .phone(c.getPhone())
+                        .address(c.getAddress())
+                        .status(c.getStatus())
+                        .build())
                 .toList();
     }
 }
