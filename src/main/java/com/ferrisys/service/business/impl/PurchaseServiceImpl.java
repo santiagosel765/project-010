@@ -6,6 +6,7 @@ import com.ferrisys.common.entity.business.Purchase;
 import com.ferrisys.repository.ProviderRepository;
 import com.ferrisys.repository.PurchaseRepository;
 import com.ferrisys.service.business.PurchaseService;
+import java.util.UUID;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -36,7 +37,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     @Override
     @Transactional
-    public void disable(Integer id) {
+    public void disable(UUID id) {
         Purchase purchase = purchaseRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Compra no encontrada"));
         purchase.setStatus(0);

@@ -4,6 +4,7 @@ import com.ferrisys.common.dto.ClientDTO;
 import com.ferrisys.common.entity.business.Client;
 import com.ferrisys.repository.ClientRepository;
 import com.ferrisys.service.business.ClientService;
+import java.util.UUID;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     @Transactional
-    public void disable(Integer id) {
+    public void disable(UUID id) {
         Client client = clientRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
         client.setStatus(0);

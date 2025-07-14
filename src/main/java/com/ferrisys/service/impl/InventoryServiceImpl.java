@@ -7,6 +7,7 @@ import com.ferrisys.common.entity.inventory.Product;
 import com.ferrisys.repository.CategoryRepository;
 import com.ferrisys.repository.ProductRepository;
 import com.ferrisys.service.InventoryService;
+import java.util.UUID;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -49,7 +50,7 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     @Transactional
-    public void disableCategory(Integer id) {
+    public void disableCategory(UUID id) {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Categoría no encontrada"));
         category.setStatus(0);
@@ -58,7 +59,7 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     @Transactional
-    public void disableProduct(Integer id) {
+    public void disableProduct(UUID id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
         product.setStatus(0);

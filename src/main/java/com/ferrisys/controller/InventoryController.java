@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/v1/inventory")
@@ -27,12 +28,12 @@ public class InventoryController {
     }
 
     @PostMapping("/category/disable")
-    public void disableCategory(@RequestParam Integer id) {
+    public void disableCategory(@RequestParam UUID id) {
         inventoryService.disableCategory(id);
     }
 
     @PostMapping("/product/disable")
-    public void disableProduct(@RequestParam Integer id) {
+    public void disableProduct(@RequestParam UUID id) {
         inventoryService.disableProduct(id);
     }
 

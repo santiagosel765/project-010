@@ -1,16 +1,18 @@
 package com.ferrisys.common.enums;
 
+import java.util.UUID;
+
 public enum DefaultRole {
-    USER(1),
-    ADMIN(2);
+    USER(UUID.fromString("08b21056-7149-40bd-86f4-7be597071d55")),
+    ADMIN(UUID.fromString("20bda0bd-c44b-4e46-af5f-d77697a2f7b2"));
 
-    private final Integer id;
+    private final UUID id;
 
-    DefaultRole(Integer id) {
+    DefaultRole(UUID id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    public UUID getId() {
         return id;
     }
 }

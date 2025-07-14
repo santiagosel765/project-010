@@ -6,6 +6,7 @@ import com.ferrisys.common.entity.business.Quote;
 import com.ferrisys.repository.ClientRepository;
 import com.ferrisys.repository.QuoteRepository;
 import com.ferrisys.service.business.QuoteService;
+import java.util.UUID;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -36,7 +37,7 @@ public class QuoteServiceImpl implements QuoteService {
 
     @Override
     @Transactional
-    public void disable(Integer id) {
+    public void disable(UUID id) {
         Quote quote = quoteRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cotización no encontrada"));
         quote.setStatus(0);

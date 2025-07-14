@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -12,7 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class ProviderDTO {
-    private Integer id;
+    private UUID id;
     private String name;
     private String contact;
     private Integer status;

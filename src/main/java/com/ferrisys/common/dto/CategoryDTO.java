@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -13,7 +14,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class CategoryDTO {
-    private Integer id;
+    private UUID id;
     private String name;
     private String description;
     private Integer status;

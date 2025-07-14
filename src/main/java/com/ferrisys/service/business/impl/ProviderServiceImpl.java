@@ -4,6 +4,7 @@ import com.ferrisys.common.dto.ProviderDTO;
 import com.ferrisys.common.entity.business.Provider;
 import com.ferrisys.repository.ProviderRepository;
 import com.ferrisys.service.business.ProviderService;
+import java.util.UUID;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ public class ProviderServiceImpl implements ProviderService {
 
     @Override
     @Transactional
-    public void disable(Integer id) {
+    public void disable(UUID id) {
         Provider provider = providerRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Proveedor no encontrado"));
         provider.setStatus(0);

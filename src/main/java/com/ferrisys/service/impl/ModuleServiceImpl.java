@@ -6,6 +6,7 @@ import com.ferrisys.repository.ModuleRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import java.util.UUID;
 
 import java.util.List;
 
@@ -46,7 +47,7 @@ public class ModuleServiceImpl {
                 .toList();
     }
 
-    public void disableModule(Integer id) {
+    public void disableModule(UUID id) {
         AuthModule module = moduleRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Módulo no encontrado"));
         module.setStatus(0);

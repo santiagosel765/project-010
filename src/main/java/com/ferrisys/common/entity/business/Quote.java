@@ -3,6 +3,8 @@ package com.ferrisys.common.entity.business;
 import com.ferrisys.common.audit.Auditable;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
+import java.util.UUID;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -17,9 +19,10 @@ import java.math.BigDecimal;
 public class Quote extends Auditable implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(columnDefinition = "uuid", updatable = false)
+    private UUID id;
     @ManyToOne
     @JoinColumn(name = "client_id", nullable = false)
     private Client client;
