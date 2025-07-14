@@ -7,6 +7,7 @@ import com.ferrisys.common.entity.user.AuthUserRole;
 import com.ferrisys.common.entity.user.User;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface UserService {
 
@@ -14,11 +15,11 @@ public interface UserService {
 
     User getUserByEmail(String email);
 
-    void changePassword(Long userId, String newPassword, String confirmPassword);
+    void changePassword(UUID userId, String newPassword, String confirmPassword);
 
     User getAuthUser(String username);
 
-    AuthUserRole getUserRole(Long userId);
+    AuthUserRole getUserRole(UUID userId);
 
     AuthResponse registerUser(RegisterRequest request);
 

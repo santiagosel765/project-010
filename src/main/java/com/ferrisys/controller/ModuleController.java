@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/v1/modules")
@@ -25,7 +26,7 @@ public class ModuleController {
     }
 
     @PostMapping("/disable")
-    public void disable(@RequestParam Integer id) {
+    public void disable(@RequestParam UUID id) {
         moduleService.disableModule(id);
     }
 }

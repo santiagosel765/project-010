@@ -1,20 +1,13 @@
-package com.ferrisys.common.entity.inventory;
+package com.ferrisys.common.entity.business;
 
 import com.ferrisys.common.audit.Auditable;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import java.util.UUID;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -22,8 +15,8 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "inv_category")
-public class Category extends Auditable implements Serializable {
+@Table(name = "bus_purchase")
+public class Purchase extends Auditable implements Serializable {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -31,10 +24,15 @@ public class Category extends Auditable implements Serializable {
     @Column(columnDefinition = "uuid", updatable = false)
     private UUID id;
 
-    @Column(nullable = false, unique = true)
-    private String name;
+    @ManyToOne
+    @JoinColumn(name = "provider_id", nullable = false)
+    private Provider provider;
 
+    @Column
     private String description;
+
+    @Column
+    private BigDecimal total;
 
     @Column(nullable = false)
     private Integer status;

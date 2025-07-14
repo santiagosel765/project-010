@@ -5,17 +5,16 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import java.util.UUID;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-import java.util.UUID;
-
-public class ModuleDTO {
-    UUID id;
-    String name;
-    String description;
-    Integer status;
+public class ProviderDTO {
+    private UUID id;
+    private String name;
+    private String contact;
+    private Integer status;
 }

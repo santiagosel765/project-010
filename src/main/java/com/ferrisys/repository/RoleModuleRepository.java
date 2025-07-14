@@ -5,12 +5,13 @@ import com.ferrisys.common.entity.user.AuthRoleModule;
 import com.ferrisys.common.entity.user.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import java.util.UUID;
 
 import java.util.List;
 
-public interface RoleModuleRepository extends JpaRepository<AuthRoleModule, Integer> {
+public interface RoleModuleRepository extends JpaRepository<AuthRoleModule, UUID> {
     void deleteByRole(Role role);
 
     @Query("SELECT rm.module FROM AuthRoleModule rm WHERE rm.role.id = :roleId AND rm.status = 1")
-    List<AuthModule> findModulesByRoleId(Integer roleId);
+    List<AuthModule> findModulesByRoleId(UUID roleId);
 }

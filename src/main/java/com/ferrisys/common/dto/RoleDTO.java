@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -14,9 +15,9 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class RoleDTO {
-    Integer id;
+    UUID id;
     String name;
     String description;
     Integer status;
-    List<Integer> moduleIds;
+    List<UUID> moduleIds;
 }

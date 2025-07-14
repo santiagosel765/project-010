@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
+import java.util.UUID;
 
 import java.io.Serializable;
 
@@ -19,8 +21,10 @@ import java.io.Serializable;
 public class AuthUserRole implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+        @GeneratedValue(generator = "UUID")
+        @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+        @Column(columnDefinition = "uuid", updatable = false)
+        private UUID id;
 
 	@ManyToOne
 	@JoinColumn(name = "auth_user_id", nullable = false)

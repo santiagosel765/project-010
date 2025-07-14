@@ -10,6 +10,7 @@ import com.ferrisys.repository.RoleRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import java.util.UUID;
 
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class RoleServiceImpl {
         // actualiza los módulos asociados
         roleModuleRepository.deleteByRole(saved);
         if (dto.getModuleIds() != null) {
-            for (Integer moduleId : dto.getModuleIds()) {
+            for (UUID moduleId : dto.getModuleIds()) {
                 AuthModule module = moduleRepository.findById(moduleId)
                         .orElseThrow(() -> new RuntimeException("Módulo no encontrado"));
                 roleModuleRepository.save(AuthRoleModule.builder()
@@ -67,7 +68,7 @@ public class RoleServiceImpl {
     }
 
     @Transactional
-    public void disableRole(Integer id) {
+    public void disableRole(UUID id) {
         Role role = roleRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Rol no encontrado"));
         role.setStatus(0);

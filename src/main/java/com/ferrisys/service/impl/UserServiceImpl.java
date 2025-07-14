@@ -23,8 +23,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.ferrisys.common.enums.DefaultRole;
+import com.ferrisys.common.enums.DefaultUserStatus;
 
 import java.util.List;
+import java.util.UUID;
 
 
 @Service
@@ -40,7 +42,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getAuthUser(String username) {
-        return userRepository.findByUsernameAndStatus(username, new UserStatus(1))
+        return userRepository.findByUsernameAndStatus(username, new UserStatus(DefaultUserStatus.ACTIVE.getId()))
                 .orElseThrow(() -> new NotFoundException("User not found or inactive"));
     }
 
@@ -52,13 +54,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByEmail(String email) {
-        return userRepository.findByEmailAndStatus(email, new UserStatus(1))
+        return userRepository.findByEmailAndStatus(email, new UserStatus(DefaultUserStatus.ACTIVE.getId()))
                 .orElseThrow(() -> new NotFoundException("User with provided email not found or inactive"));
     }
 
     @Override
     @Transactional
-    public void changePassword(Long userId, String newPassword, String confirmPassword) {
+    public void changePassword(UUID userId, String newPassword, String confirmPassword) {
         if (!newPassword.equals(confirmPassword)) {
             throw new BadRequestException("New password and confirmation do not match");
         }
@@ -67,12 +69,12 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new NotFoundException("User not found"));
 
         user.setPassword(new BCryptPasswordEncoder().encode(newPassword));
-        user.setStatus(new UserStatus(1));
+        user.setStatus(new UserStatus(DefaultUserStatus.ACTIVE.getId()));
         userRepository.save(user);
     }
 
     @Override
-    public AuthUserRole getUserRole(Long userId) {
+    public AuthUserRole getUserRole(UUID userId) {
         return authUserRoleRepository.findByUserId(userId)
                 .orElseThrow(() -> new NotFoundException("User role not found"));
     }
@@ -83,7 +85,7 @@ public class UserServiceImpl implements UserService {
             throw new BadRequestException("Username already exists");
         }
 
-        UserStatus activeStatus = userStatusRepository.findById(1)
+        UserStatus activeStatus = userStatusRepository.findById(DefaultUserStatus.ACTIVE.getId())
                 .orElseThrow(() -> new RuntimeException("Estado de usuario no encontrado"));
 
         User user = User.builder()

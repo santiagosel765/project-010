@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/v1/roles")
@@ -31,7 +32,7 @@ public class RoleController {
     }
 
     @PostMapping("/disable")
-    public ResponseEntity<String> disableRole(@RequestParam Integer roleId) {
+    public ResponseEntity<String> disableRole(@RequestParam UUID roleId) {
         roleService.disableRole(roleId);
         return ResponseEntity.ok("Rol deshabilitado");
     }
