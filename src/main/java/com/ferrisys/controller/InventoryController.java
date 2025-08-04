@@ -3,11 +3,11 @@ package com.ferrisys.controller;
 
 import com.ferrisys.common.dto.CategoryDTO;
 import com.ferrisys.common.dto.ProductDTO;
+import com.ferrisys.common.dto.PageResponse;
 import com.ferrisys.service.InventoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -38,12 +38,16 @@ public class InventoryController {
     }
 
     @GetMapping("/categories")
-    public List<CategoryDTO> getCategories() {
-        return inventoryService.listCategories();
+    public PageResponse<CategoryDTO> getCategories(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return inventoryService.listCategories(page, size);
     }
 
     @GetMapping("/products")
-    public List<ProductDTO> getProducts() {
-        return inventoryService.listProducts();
+    public PageResponse<ProductDTO> getProducts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return inventoryService.listProducts(page, size);
     }
 }

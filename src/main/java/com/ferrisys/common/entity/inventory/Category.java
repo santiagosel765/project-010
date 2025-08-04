@@ -36,6 +36,9 @@ public class Category extends Auditable implements Serializable {
 
     private String description;
 
+    @Column(name = "parent_category_id")
+    private UUID parentCategoryId;
+
     @Column(nullable = false)
     private Integer status;
 }

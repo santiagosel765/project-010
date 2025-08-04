@@ -2,8 +2,8 @@ package com.ferrisys.service;
 
 import com.ferrisys.common.dto.CategoryDTO;
 import com.ferrisys.common.dto.ProductDTO;
+import com.ferrisys.common.dto.PageResponse;
 
-import java.util.List;
 import java.util.UUID;
 
 public interface InventoryService {
@@ -11,6 +11,6 @@ public interface InventoryService {
     void saveOrUpdateProduct(ProductDTO dto);
     void disableCategory(UUID id);
     void disableProduct(UUID id);
-    List<CategoryDTO> listCategories();
-    List<ProductDTO> listProducts();
+    PageResponse<CategoryDTO> listCategories(int page, int size);
+    PageResponse<ProductDTO> listProducts(int page, int size);
 }
