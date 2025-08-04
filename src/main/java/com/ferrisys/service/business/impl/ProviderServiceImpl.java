@@ -1,5 +1,6 @@
 package com.ferrisys.service.business.impl;
 
+import com.ferrisys.common.dto.PageResponse;
 import com.ferrisys.common.dto.ProviderDTO;
 import com.ferrisys.common.entity.business.Provider;
 import com.ferrisys.repository.ProviderRepository;
@@ -7,6 +8,8 @@ import com.ferrisys.service.business.ProviderService;
 import java.util.UUID;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,8 +45,9 @@ public class ProviderServiceImpl implements ProviderService {
     }
 
     @Override
-    public List<ProviderDTO> list() {
-        return providerRepository.findAll().stream()
+    public PageResponse<ProviderDTO> list(int page, int size) {
+        Page<Provider> result = providerRepository.findAll(PageRequest.of(page, size));
+        List<ProviderDTO> content = result.getContent().stream()
                 .map(p -> ProviderDTO.builder()
                         .id(p.getId())
                         .name(p.getName())
@@ -54,5 +58,7 @@ public class ProviderServiceImpl implements ProviderService {
                         .status(p.getStatus())
                         .build())
                 .toList();
+        return new PageResponse<>(content, result.getTotalPages(), result.getTotalElements(),
+                result.getNumber(), result.getSize());
     }
 }

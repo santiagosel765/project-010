@@ -1,11 +1,11 @@
 package com.ferrisys.controller;
 
 import com.ferrisys.common.dto.ModuleDTO;
+import com.ferrisys.common.dto.PageResponse;
 import com.ferrisys.service.impl.ModuleServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -21,8 +21,10 @@ public class ModuleController {
     }
 
     @GetMapping("/list")
-    public List<ModuleDTO> getAll() {
-        return moduleService.getAll();
+    public PageResponse<ModuleDTO> getAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return moduleService.getAll(page, size);
     }
 
     @PostMapping("/disable")

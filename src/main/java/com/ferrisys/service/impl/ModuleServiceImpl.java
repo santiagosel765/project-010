@@ -1,10 +1,13 @@
 package com.ferrisys.service.impl;
 
 import com.ferrisys.common.dto.ModuleDTO;
+import com.ferrisys.common.dto.PageResponse;
 import com.ferrisys.common.entity.user.AuthModule;
 import com.ferrisys.repository.ModuleRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import java.util.UUID;
 
@@ -36,8 +39,9 @@ public class ModuleServiceImpl {
         moduleRepository.save(module);
     }
 
-    public List<ModuleDTO> getAll() {
-        return moduleRepository.findAll().stream()
+    public PageResponse<ModuleDTO> getAll(int page, int size) {
+        Page<AuthModule> result = moduleRepository.findAll(PageRequest.of(page, size));
+        List<ModuleDTO> content = result.getContent().stream()
                 .map(m -> ModuleDTO.builder()
                         .id(m.getId())
                         .name(m.getName())
@@ -45,6 +49,8 @@ public class ModuleServiceImpl {
                         .status(m.getStatus())
                         .build())
                 .toList();
+        return new PageResponse<>(content, result.getTotalPages(), result.getTotalElements(),
+                result.getNumber(), result.getSize());
     }
 
     public void disableModule(UUID id) {

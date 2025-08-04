@@ -1,5 +1,6 @@
 package com.ferrisys.service.business.impl;
 
+import com.ferrisys.common.dto.PageResponse;
 import com.ferrisys.common.dto.PurchaseDTO;
 import com.ferrisys.common.dto.PurchaseDetailDTO;
 import com.ferrisys.common.entity.business.Provider;
@@ -14,6 +15,8 @@ import com.ferrisys.service.business.PurchaseService;
 import java.util.UUID;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -69,8 +72,9 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
-    public List<PurchaseDTO> list() {
-        return purchaseRepository.findAll().stream()
+    public PageResponse<PurchaseDTO> list(int page, int size) {
+        Page<Purchase> result = purchaseRepository.findAll(PageRequest.of(page, size));
+        List<PurchaseDTO> content = result.getContent().stream()
                 .map(p -> PurchaseDTO.builder()
                         .id(p.getId())
                         .providerId(p.getProvider().getId())
@@ -87,5 +91,7 @@ public class PurchaseServiceImpl implements PurchaseService {
                         .status(p.getStatus())
                         .build())
                 .toList();
+        return new PageResponse<>(content, result.getTotalPages(), result.getTotalElements(),
+                result.getNumber(), result.getSize());
     }
 }

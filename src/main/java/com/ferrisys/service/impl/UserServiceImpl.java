@@ -1,6 +1,7 @@
 package com.ferrisys.service.impl;
 
 import com.ferrisys.common.dto.ModuleDTO;
+import com.ferrisys.common.dto.PageResponse;
 import com.ferrisys.common.entity.user.AuthModule;
 import com.ferrisys.repository.AuthUserRoleRepository;
 import com.ferrisys.repository.RoleModuleRepository;
@@ -20,6 +21,8 @@ import com.ferrisys.common.exception.impl.NotFoundException;
 import io.jsonwebtoken.Claims;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.ferrisys.common.enums.DefaultRole;
@@ -158,15 +161,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<ModuleDTO> getModulesForCurrentUser() {
+    public PageResponse<ModuleDTO> getModulesForCurrentUser(int page, int size) {
         String username = jwtUtil.getCurrentUser();
         User user = getAuthUser(username);
         AuthUserRole role = getUserRole(user.getId());
 
-        List<AuthModule> modules = roleModuleRepository.findModulesByRoleId(role.getRole().getId());
-
-        return modules.stream()
-                .filter(m -> m.getStatus() == 1)
+        Page<AuthModule> result = roleModuleRepository.findModulesByRoleId(
+                role.getRole().getId(), PageRequest.of(page, size));
+        List<ModuleDTO> content = result.getContent().stream()
                 .map(m -> ModuleDTO.builder()
                         .id(m.getId())
                         .name(m.getName())
@@ -174,6 +176,8 @@ public class UserServiceImpl implements UserService {
                         .status(m.getStatus())
                         .build())
                 .toList();
+        return new PageResponse<>(content, result.getTotalPages(), result.getTotalElements(),
+                result.getNumber(), result.getSize());
     }
 
 }

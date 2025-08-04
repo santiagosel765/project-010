@@ -1,5 +1,6 @@
 package com.ferrisys.service.business.impl;
 
+import com.ferrisys.common.dto.PageResponse;
 import com.ferrisys.common.dto.QuoteDTO;
 import com.ferrisys.common.dto.QuoteDetailDTO;
 import com.ferrisys.common.entity.business.Client;
@@ -14,6 +15,8 @@ import com.ferrisys.service.business.QuoteService;
 import java.util.UUID;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -68,8 +71,9 @@ public class QuoteServiceImpl implements QuoteService {
     }
 
     @Override
-    public List<QuoteDTO> list() {
-        return quoteRepository.findAll().stream()
+    public PageResponse<QuoteDTO> list(int page, int size) {
+        Page<Quote> result = quoteRepository.findAll(PageRequest.of(page, size));
+        List<QuoteDTO> content = result.getContent().stream()
                 .map(q -> QuoteDTO.builder()
                         .id(q.getId())
                         .clientId(q.getClient().getId())
@@ -86,5 +90,7 @@ public class QuoteServiceImpl implements QuoteService {
                         .status(q.getStatus())
                         .build())
                 .toList();
+        return new PageResponse<>(content, result.getTotalPages(), result.getTotalElements(),
+                result.getNumber(), result.getSize());
     }
 }
