@@ -1,11 +1,11 @@
 package com.ferrisys.controller;
 
+import com.ferrisys.common.dto.PageResponse;
 import com.ferrisys.common.dto.PurchaseDTO;
 import com.ferrisys.service.business.PurchaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -26,7 +26,9 @@ public class PurchaseController {
     }
 
     @GetMapping("/list")
-    public List<PurchaseDTO> list() {
-        return purchaseService.list();
+    public PageResponse<PurchaseDTO> list(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return purchaseService.list(page, size);
     }
 }

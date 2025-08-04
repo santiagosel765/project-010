@@ -1,5 +1,6 @@
 package com.ferrisys.service.impl;
 
+import com.ferrisys.common.dto.PageResponse;
 import com.ferrisys.common.dto.RoleDTO;
 import com.ferrisys.common.entity.user.AuthModule;
 import com.ferrisys.common.entity.user.AuthRoleModule;
@@ -9,6 +10,8 @@ import com.ferrisys.repository.RoleModuleRepository;
 import com.ferrisys.repository.RoleRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import java.util.UUID;
 
@@ -56,8 +59,9 @@ public class RoleServiceImpl {
         }
     }
 
-    public List<RoleDTO> getAll() {
-        return roleRepository.findAll().stream()
+    public PageResponse<RoleDTO> getAll(int page, int size) {
+        Page<Role> result = roleRepository.findAll(PageRequest.of(page, size));
+        List<RoleDTO> content = result.getContent().stream()
                 .map(role -> RoleDTO.builder()
                         .id(role.getId())
                         .name(role.getName())
@@ -65,6 +69,8 @@ public class RoleServiceImpl {
                         .status(role.getStatus())
                         .build())
                 .toList();
+        return new PageResponse<>(content, result.getTotalPages(), result.getTotalElements(),
+                result.getNumber(), result.getSize());
     }
 
     @Transactional

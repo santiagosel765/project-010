@@ -1,11 +1,11 @@
 package com.ferrisys.controller;
 
+import com.ferrisys.common.dto.PageResponse;
 import com.ferrisys.common.dto.QuoteDTO;
 import com.ferrisys.service.business.QuoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 
@@ -27,7 +27,9 @@ public class QuoteController {
     }
 
     @GetMapping("/list")
-    public List<QuoteDTO> list() {
-        return quoteService.list();
+    public PageResponse<QuoteDTO> list(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return quoteService.list(page, size);
     }
 }

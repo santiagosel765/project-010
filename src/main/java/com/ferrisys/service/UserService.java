@@ -2,11 +2,11 @@ package com.ferrisys.service;
 
 import com.ferrisys.common.dto.AuthResponse;
 import com.ferrisys.common.dto.ModuleDTO;
+import com.ferrisys.common.dto.PageResponse;
 import com.ferrisys.common.dto.RegisterRequest;
 import com.ferrisys.common.entity.user.AuthUserRole;
 import com.ferrisys.common.entity.user.User;
 
-import java.util.List;
 import java.util.UUID;
 
 public interface UserService {
@@ -27,6 +27,6 @@ public interface UserService {
 
     AuthResponse recoverPassword(String newPassword, String confirmPassword, String userToken);
 
-    List<ModuleDTO> getModulesForCurrentUser();
+    PageResponse<ModuleDTO> getModulesForCurrentUser(int page, int size);
 
 }
