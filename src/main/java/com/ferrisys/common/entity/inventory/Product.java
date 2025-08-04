@@ -42,6 +42,9 @@ public class Product extends Auditable implements Serializable {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
+    @Column(name = "company_id")
+    private UUID companyId;
+
     @Column(nullable = false)
     private Integer status;
 }

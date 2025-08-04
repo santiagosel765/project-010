@@ -16,6 +16,7 @@ public class ProductDTO {
     private UUID id;
     private String name;
     private String description;
+    private UUID companyId;
     private UUID categoryId;
     private Integer status;
 }
